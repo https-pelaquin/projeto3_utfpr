@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt_BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Projeto WEB</title>
+    <link rel="stylesheet" href="stylesheets/style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="banner">
+            <div class="container">
+                <nav>
+                    <div class="logo">
+                        <img class="img" src="https://www.cursoemvideo.com/wp-content/uploads/2019/08/cursoemvideo-logo-branca.png" alt="logo" style="width: 100%;">
+                    </div>
+                    <button>&#9776;</button>
+                    <ul>
+                        <li class="primeiro-li"><a href="/cursos">Cursos</a></li>
+                        <li><a href="#">Sobre</a></li>
+                        <li><a href="#">Seja um Apoiador</a></li>
+                        <li><a href="/users/login">Login</a></li>
+                        <li><a href="/users/cadastro">Cadastre-se</a></li>
+                        <li><a href="#">Validação de Certificado</a></li>
+                        <li><a href="#">Hall da Fama</a></li>
+                    </ul>
+                </nav>
+                <div class="inicio">
+                    <div class="texto">
+                        <h1>Paixão por</h1>
+                        <h3>ensinar</h3>
+                        <p>Estude gratuitamente e aprenda <br> com conteúdo e professores de qualidade</p>
+                        <div class="botão-começar">
+                            <a href="/users/cadastro">Começar!</a>
+                        </div>
+                    </div>
+                    <div class="imagem">
+                        <img class="img" src="https://www.cursoemvideo.com/wp-content/uploads/2019/08/guana6.png" alt="Gustavo Guanabara" style="width: 40vw; margin-bottom: -4px;">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!--
+        <div class="formularios" id="formularios">
+            <div class="cadastro">
+                <div class="formCadastro">
+                    <h2>Cadastro de Usuário</h2>
+                    <div id="msgError" class="msgError"></div>
+                    <div id="msgSuccess" class="msgSuccess"></div>
+                    <div class="itemCadastro">
+                        <label for="nome" id="labelNome">Nome</label>
+                        <input type="text" id="nome">
+                    </div>
+                    <div class="itemCadastro">
+                        <label for="email" id="labelEmail">Email</label>
+                        <input type="email" id="email">
+                    </div>
+                    <div class="itemCadastro">
+                        <label for="senha" id="labelSenha">Senha</label>
+                        <input type="password" id="senha">
+                    </div>
+                    <div>
+                        <button onclick="cadastrar()">Cadastrar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="login">
+                <div class="formLogin">
+                    <h2>Login do Usuário</h2>
+                    <div id="msgErrorLogin" class="msgError"></div>
+                    <div id="msgSuccessLogin" class="msgSuccess"></div>
+                    <div class="itemLogin">
+                        <label for="emailLogin" id="labelEmailLogin">Email</label>
+                        <input type="email" id="emailLogin">
+                    </div>
+                    <div class="itemLogin">
+                        <label for="senhaLogin" id="labelSenhaLogin">Senha</label>
+                        <input type="password" id="senhaLogin">
+                    </div>
+                    <div>
+                        <button onclick="login()">Entrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="consulta" id="consulta">
+            <h1 id="bemvindo"></h1>
+            <div class="sair">
+                <h4>Clique aqui para Sair</h4>
+                <button class="sair" id="sair" onclick="sair()">Sair</button>
+            </div>
+            <h2>Busque por anime</h2>
+            <input type="text" id="busca_anime" name="busca_anime" class="busca_anime" placeholder="Digite um anime" value="" minlength="3">
+            <button id="buscar">Buscar</button>
+
+            <div id="search_results" class="cards">
+
+            </div>
+        </div>
+        -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        var validToken = localStorage.getItem("token")
+        if (validToken == "" || validToken == null){
+            document.getElementById("formularios").setAttribute("style", "display: flex");
+            document.getElementById("consulta").setAttribute("style", "display: none");
+        } else {
+            document.getElementById("formularios").setAttribute("style", "display: none");
+            document.getElementById("consulta").setAttribute("style", "display: block");
+        }
+        /* script de cadastro*/
+        let nome = document.querySelector("#nome");
+        let labelNome = document.querySelector("#labelNome");
+        let validarNome = false;
+
+        let email = document.querySelector("#email");
+        let labelEmail = document.querySelector("#labelEmail");
+        let validarEmail = false;
+
+        let senha = document.querySelector("#senha")
+        let labelSenha = document.querySelector("#labelSenha");
+        let validarSenha = false;
+
+        let msgError = document.querySelector("#msgError");
+        let msgSuccess = document.querySelector("#msgSuccess");
+
+        nome.addEventListener('keyup', () => {
+            if (nome.value.length <= 2) {
+                labelNome.setAttribute('style', 'color: red')
+                labelNome.innerHTML = 'Nome'
+                nome.setAttribute('style', 'border-color: red')
+                validarNome = false
+            } else {
+                labelNome.setAttribute('style', 'color: green')
+                labelNome.innerHTML = 'Nome'
+                nome.setAttribute('style', 'border-color: green')
+                if (nome.value != "") {
+                    validarNome = true
+                } else {
+                    validarNome = false
+                }
+            }
+        })
+
+        email.addEventListener('keyup', () => {
+            if (email.value.length <= 10) {
+                labelEmail.setAttribute('style', 'color: red')
+                labelEmail.innerHTML = 'Email'
+                email.setAttribute('style', 'border-color: red')
+                validarEmail = false
+            } else {
+                labelEmail.setAttribute('style', 'color: green')
+                labelEmail.innerHTML = 'Email'
+                email.setAttribute('style', 'border-color: green')
+                if (email.value != "") {
+                    validarEmail = true
+                } else {
+                    validarEmail = false
+                }
+            }
+        })
+
+        senha.addEventListener('keyup', () => {
+            if (senha.value.length <= 5) {
+                labelSenha.setAttribute('style', 'color: red')
+                labelSenha.innerHTML = 'Senha'
+                senha.setAttribute('style', 'border-color: red')
+                validarSenha = false
+            } else {
+                labelSenha.setAttribute('style', 'color: green')
+                labelSenha.innerHTML = 'Senha'
+                senha.setAttribute('style', 'border-color: green')
+
+                if (senha.value != "") {
+                    validarSenha = true
+                } else {
+                    validarSenha = false
+                }
+            }
+        })
+
+
+        function cadastrar() {
+            if (validarNome && validarEmail && validarSenha) {
+                let listaUser = JSON.parse(localStorage.getItem("listaUser") || "[]")
+
+                listaUser.push({
+                    nomeCad: nome.value,
+                    emailCad: email.value,
+                    senhaCad: senha.value
+                })
+
+                localStorage.setItem("listaUser", JSON.stringify(listaUser))
+
+                msgSuccess.setAttribute('style', 'display: block')
+                msgSuccess.innerHTML = '<strong>Cadastrado com sucesso</strong>'
+                msgError.setAttribute('style', 'display: none')
+                msgError.innerHTML = ''
+
+                nome.value = null;
+                email.value = null;
+                senha.value = null;
+            } else {
+                msgError.setAttribute('style', 'display: block')
+                msgError.innerHTML = '<strong>Preencha todos os campos corretamente antes de cadastrar</strong>'
+                msgSuccess.innerHTML = ''
+                msgSuccess.setAttribute('style', 'display: none')
+            }
+        }
+
+        /* Script de Login do usuario */
+
+        function login() {
+            let emailLogin = document.querySelector("#emailLogin");
+            let labelEmailLogin = document.querySelector("#labelEmailLogin");
+
+            let senhaLogin = document.querySelector("#senhaLogin");
+            let labelSenhaLogin = document.querySelector("#labelSenhaLogin");
+
+            let msgError = document.querySelector("#msgErrorLogin");
+
+            let listaUser = [];
+
+            let userValid = {
+                nome: '',
+                email: '',
+                senha: ''
+            }
+
+            listaUser = JSON.parse(localStorage.getItem("listaUser"));
+
+            listaUser.forEach((item) => {
+                if (emailLogin.value == item.emailCad && senhaLogin.value == item.senhaCad) {
+                    userValid = {
+                        nome: item.nomeCad,
+                        email: item.emailCad,
+                        senha: item.senhaCad
+                    };
+                }
+            });
+
+            if (emailLogin.value == userValid.email && senhaLogin.value == userValid.senha) {
+                let token = Math.random().toString(16).substr(2);
+                localStorage.setItem("token", token)
+                localStorage.setItem("userLogado", JSON.stringify(userValid))
+
+                document.getElementById("formularios").setAttribute("style", "display: none");
+                document.getElementById("consulta").setAttribute("style", "display: block");
+
+            } else {
+                labelEmailLogin.setAttribute("style", "color: red");
+                labelSenhaLogin.setAttribute("style", "color: red");
+                msgError.innerHTML = "Usuário ou senha incorretos";
+                msgError.setAttribute("style", "display: block");
+            }
+        }
+        /* Script para sair*/
+        function sair(){
+            localStorage.removeItem("token");
+            localStorage.removeItem("userLogado");
+            document.getElementById("formularios").setAttribute("style", "display: flex");
+            document.getElementById("consulta").setAttribute("style", "display: none");
+        }
+
+        /* Script de pesquisa de animes*/
+        let userLogado = JSON.parse(localStorage.getItem("userLogado"))
+        document.getElementById("bemvindo").innerHTML = ("Bem vindo");
+
+        var container = document.getElementById("search_results");
+        document.getElementById("buscar").addEventListener("click", function() {
+            var query = document.querySelector("#busca_anime").value;
+            axios.get("https://api.jikan.moe/v3/search/anime?q=" + query).then(function(res) {
+
+                var results = res.data.results;
+                var maxResults = 13;
+
+                var node = document.getElementById('search_results');
+                while (node.firstChild) {
+                    node.removeChild(node.firstChild);
+                }
+
+                for (let i = 0; i < results.length; i++) {
+
+                    title = results[i].title;
+                    img = results[i].image_url;
+                    link = results[i].url;
+
+                    console.log(results);
+
+                    if (i > maxResults) {
+                        throw BreakException;
+                    }
+
+                    document.getElementById('search_results')
+                        .insertAdjacentHTML('beforeend',
+                            `<a href="${link}" class="card">
+                            <div class="card__image">
+                                <img loading="lazy" src="${img}" alt="${title}" />
+                            </div>
+                            <div class="card__name">
+                                <span>${title}</span> 
+                            </div>
+                        </a>`
+                        );
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
